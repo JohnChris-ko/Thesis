@@ -1,0 +1,163 @@
+% Main LaTeX file for Plant Disease Thesis
+\documentclass[12pt,a4paper]{report}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{natbib}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+\doublespacing
+
+\begin{document}
+
+% ------------------- TITLE PAGE -------------------
+\begin{titlepage}
+    \centering
+    {\Large \textbf{Deep Learning for Plant Disease Detection Using Leaf Images}}\\[1cm]
+    {A Research Thesis Submitted in Partial Fulfillment of the Requirements for the Degree of Master of Science}\\[1cm]
+    {By: [Student Name]}\\[0.5cm]
+    {Supervisor: [Supervisor Name]}\\[2cm]
+    {Department of Computer Science and Engineering}\\
+    {[University Name]}\\[1cm]
+    {Date: [Month, Year]}\\
+\end{titlepage}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\begin{List of Abbreviations}
+    \centering
+6lowPAN: Ipv6 over Low-power Wireless Personal Area Networks
+APIs: Application Programming Interface
+CNN: Deep Convolution Neural Networks 
+ COAP: Constrained Application Protocol
+CPU: Central Processing Unit 
+GPS: Global Positioning System
+IEEE: Institute of Electrical and Electronics Engineers
+IoT: Internet of Things 
+ML: Machine Learning
+NIR LIGHT: Near-Infrared Light
+PA: Precision Agriculture 
+RPL: Routing Protocol for Low-Power and Lossy Networks 
+SVM: Support Vector Machine
+UAV: Unmanned Aerial Vehicle 
+WSN: Wireless Sensor Network 
+
+% ------------------- ABSTRACT -------------------
+\chapter*{Abstract}
+Plant diseases represent a major threat to agricultural productivity worldwide, causing substantial yield and economic losses. Traditional detection methods rely on manual expert inspection, which is labor-intensive, error-prone, and unscalable. This thesis presents a deep learning-based approach for automated plant disease classification using leaf images. Leveraging the PlantVillage dataset and the EfficientNetB3 convolutional neural network architecture, the model achieved a state-of-the-art test accuracy of 99.56\% across 38 plant disease and healthy classes. Advanced training techniques including transfer learning, data augmentation, and class balancing were applied to ensure robustness and generalization. The results demonstrate the potential for deploying this system in real-world agricultural settings to support precision farming, early disease detection, and improved crop management.
+
+% ------------------- CHAPTER 1 -------------------
+\chapter{Introduction}
+The Internet of Things (IoT) has advanced significantly in the agriculture sector. The IoT integrations with several commercial applications, such as supply chain and food waste management, animal infiltration, weed and pest detection, irrigation control, and weather, soil moisture, temperature, fertility, and crop growth monitoring, serves as evidence of this. IoT is an environment where objects, animals or people are equipped with unique identifiers capable of data transmission over the internet without the need for human or computer interactions. It intends to connect the physical and virtual worlds by interacting and exchanging data via the internet. It`s a promising set of technologies that may be used to provide a variety of agricultural modernization solutions. Scientific institutions, research institutes, and the agricultural sector are racing to provide more and more IoT solutions to agricultural business stakeholders, laying the foundation for a clear role when IoT becomes a mainstream technology.
+Agriculture underpins global food security, yet crop yields are constantly threatened by plant diseases. Early and accurate detection of plant diseases is vital for intervention and prevention of large-scale losses. Existing IoT and sensor-based approaches, while promising, suffer from cost, data scarcity, and implementation constraints. Consequently, this research focuses exclusively on image-based plant disease detection using deep learning. Leaf images provide clear visual indicators of plant health, and when paired with modern deep learning architectures, they enable scalable, efficient, and highly accurate disease diagnosis.
+
+\section{Background of the Study}
+The existing technologies such as ad-hoc systems, pervasive and embedded systems, wearable technology and machine learning techniques are founded new concept by emerging of IoT [6]. By using IoT devices, farmers can monitor their health crops more effectively and with fewer laborers. Additionally, sensors use communication channels to transfer the obtained status data into unified, scalable data warehouses [1]. By applying data-processing algorithms to collected data, new ideas and data-driven services can be developed. When many sensor devices are integrated into industrial-scale frameworks, a wireless sensor network (WSN) is created that is self-contained [2, 5].  
+ WSNs are collect information from different sensors in large and small networks so end users can get and process data. It consists of multiple many sensor nodes in a wireless communication-based environment. WSNs have recently been used to enable IoT applications for precision agriculture, including irrigation sensor networks, frost event prediction, precision agriculture and soil farming, smart farming, and unsighted object recognition, among others [8-10]. The sensor node is to detect physical phenomena such as temperature, humidity, and moisture with limited energy and memory [7]. In WSNs, four constrained elements are used to organize the internal structure of any sensor device: (1) sensing element (such as a signal sensor); (2) limited computation power (e.g., main memory and central processing unit (CPU)); (3) short-distance, limited-bandwidth radio transceiver; and (4) limited battery power. These constraints make it challenging to integrate such a sensor network into the agriculture sector, in terms of meeting the scalability and performance requirements of the harsh environments of agricultural farms [8-10].
+
+Figure 1: Sensor node architecture [6]
+The 6LowPAN and the Routing protocol for low-power and lossy networks (RPL) were taken into account in this study when developing the WSN's performance. Using COOJA, a realistic WSN simulator, the development outcomes of the RPL protocol in the agricultural situations were modeled and simulated. The IoT system model crop health monitoring for precision agriculture comprises three main layers, as shown in Figure 2: devices and platforms, communication layers, and application layers. 
+(I), the application layer include user applications, data analysis, and dashboards used to monitor and optimize precision operations. The Big Data and analytics module consist of a data warehouse storage, which runs at the application layer. This component contains the technology and services necessary to integrate and archive data from multiple sensors and applications, enabling the IoT system to derive and deliver value from its data assets. 
+(II), the communication layer offers real-time connectivity and enables communication between devices and platforms. This includes sensors to sensors, sensors to gateways, and gateways to servers within the IoT ecosystem. It also includes the network protocols required to transfer digital information from the sensor to the application layer. The framework combines several heterogeneous communication technologies, such as IEEE 802.4.15, 6lowPAN, and COAP. 
+(III), the devices and platforms layer is the foundation of the IoT ecosystem infrastructure. These layers include system components such as sensors, gateways, and server platforms. Sensors are devices that capture the status information about physical world objects and convert them into digital data for transmission and processing. 
+The main goal of the gateway’s platform is to aggregate heterogeneous data sources with different communication standards, given that an array of sensor devices is required to collect data about plants, water, environments, animals, and soil, among others. Servers host user applications and data repositories and provide unified access APIs for other systems and users. These three layers are existing system model, interact to perform the high-level operations of precision agriculture. The communication layer offers real-time connectivity and enables communication between devices and platforms. Remote Sensing hosts applications to analyze images coming from satellites and drones. All these layers work together to enable farmers to monitor their crops, leading to more efficient and productive farming operations [1].
+
+ Figure 2: IoT system model architecture for precision agriculture [1]
+ This figure shows the relationship between various entities such as sensors, network-enabling technologies, and agricultural resources for real-time monitoring.
+The study develops performance metrics such as network graph connectivity and power consumption for crop monitoring scenario in 6LowPAN networks and proposes a new approach for simulating crops within the COOJA simulator. Additionally, the paper introduces a novel holistic IoT ecosystem suitable for precision agriculture that satisfies the requirements for crop health monitoring studied scenario [7]. 
+An unmanned aerial vehicle (UAVs) can monitor the health of crops, apply pesticides, and take hyper spectral images in precision agriculture. Drones can scan a crop for issues in plants using visible and near-infrared light, and they can determine which plants reflect what quantities of green and NIR light. Photosynthetic activity diminishes when a plant is stressed. This data may be used to create numerous images that track plant changes and indicate their health. As a result, farmers can more accurately administer treatments after a disease has been identified. Drones are also utilized for surveillance, traffic monitoring, and weather monitoring in agriculture. Crop management has benefited from the IoT, remote sensing, and analytic data approaches. Pests may be identified, targeted, and managed to utilize remote sensing using UAVs. UAVs can fly in tough and harsh terrains to take high-resolution images that allow pests to be identified and controlled. Many crop security concerns may be solved using UAVs equipped with cameras, which are not possible with traditional pest management methods. UAVs have been used to automate insect damage in agricultural areas [33, 34].
+
+Figure 3: IoT system Architecture for crop health monitoring in precision agriculture.
+
+\section{Problem Statement}
+Traditional approaches to disease detection in agriculture require significant manual labor, expertise, and time. IoT sensor-based systems require hardware, controlled environments, and reliable connectivity, which limit their adoption in resource-constrained regions. A scalable, cost-effective, and accurate method is required to empower farmers and agricultural experts alike. This research proposes the use of a deep learning-based classifier trained on large plant leaf image datasets to provide such a solution.
+
+\section{Objectives}
+The primary objectives of this research are:
+\begin{itemize}
+    \item To design and implement a deep learning model for multi-class plant disease classification using leaf images.
+    \item To evaluate the performance of EfficientNetB3 on the PlantVillage dataset, comparing with traditional CNN baselines.
+    \item To optimize the model using data augmentation, transfer learning, and class balancing for robustness.
+    \item To discuss deployment strategies for mobile and field-based real-time disease monitoring.
+\end{itemize}
+
+% ------------------- CHAPTER 2 -------------------
+\chapter{Literature Review}
+Plant disease monitoring has traditionally relied on manual inspection and laboratory tests. IoT-based systems have been explored, involving sensors that monitor soil conditions, temperature, and humidity. However, such systems face challenges of scalability and data limitations \citep{Pantazi2019}. 
+
+Recent advances in deep learning have enabled the automation of disease identification using convolutional neural networks (CNNs). Studies have applied VGG16, ResNet, and Inception networks to the PlantVillage dataset, achieving classification accuracies between 90--96\% \citep{Mohanty2016, Ferentinos2018}. EfficientNet, introduced by \citet{Tan2019}, introduced compound scaling to balance network depth, width, and resolution, leading to higher accuracy with fewer parameters. Early applications of EfficientNet in agriculture have reported improved performance over traditional CNNs \citep{Too2019}.
+
+% ------------------- CHAPTER 3 -------------------
+\chapter{Dataset and Preprocessing}
+\section{Dataset Description}
+This research uses the PlantVillage dataset \citep{Hughes2015}, which contains over 54,000 images of plant leaves from 14 crop species across 38 disease and healthy classes. Examples include ``Tomato Late Blight'', ``Potato Early Blight'', and ``Apple Scab''.
+
+\begin{itemize}
+    \item Total Images: ~54,310.
+    \item Classes: 38 (26 diseases, 12 healthy states).
+    \item Split: 80\% training, 10\% validation, 10\% testing.
+\end{itemize}
+
+\section{Preprocessing and Augmentation}
+Images were resized to 224x224 pixels. Data augmentation was applied to simulate real-world variability:
+\begin{itemize}
+    \item Rotation up to 20 degrees.
+    \item Horizontal flipping.
+    \item Width and height shifts up to 20\%.
+    \item Zoom up to 15\%.
+    \item Shear up to 15\%.
+\end{itemize}
+
+This preprocessing pipeline ensured robustness against variations in field conditions.
+
+% ------------------- CHAPTER 4 -------------------
+\chapter{Methodology}
+\section{Model Architecture}
+The model employed EfficientNetB3 pre-trained on ImageNet. The base model was frozen, and a custom classification head was added with batch normalization, dropout, and fully connected layers.
+
+\section{Training Pipeline}
+\begin{itemize}
+    \item Optimizer: Adamax, learning rate 0.001.
+    \item Loss: Categorical cross-entropy.
+    \item Metrics: Accuracy, Precision, Recall, F1-score.
+    \item Epochs: 10 (with early stopping).
+    \item Callbacks: ReduceLROnPlateau, EarlyStopping, ModelCheckpoint.
+\end{itemize}
+
+\section{Implementation}
+Training was performed on a GPU-enabled environment using TensorFlow/Keras, with modular code for reproducibility.
+
+% ------------------- CHAPTER 5 -------------------
+\chapter{Results}
+\section{Performance Metrics}
+The model achieved the following results on the PlantVillage test set:
+\begin{itemize}
+    \item Test Accuracy: 99.56\%.
+    \item Precision (Weighted): 1.00.
+    \item Recall (Weighted): 1.00.
+    \item F1-score (Weighted): 1.00.
+\end{itemize}
+
+\section{Confusion Matrix}
+Minimal misclassifications were observed, particularly between visually similar diseases such as early and late blight.
+
+\section{Comparison with Prior Work}
+Prior CNN models such as ResNet and VGG16 achieved ~95\% accuracy. The proposed EfficientNetB3 model surpasses these benchmarks by a significant margin.
+
+% ------------------- CHAPTER 6 -------------------
+\chapter{Discussion}
+The superior performance of EfficientNetB3 demonstrates the advantage of compound scaling and transfer learning in agricultural image classification tasks. While the model excels on the PlantVillage dataset, real-world conditions such as variable lighting and occlusions present challenges. Future work should validate the model on field-collected datasets and explore lightweight architectures for mobile deployment.
+
+% ------------------- CHAPTER 7 -------------------
+\chapter{Conclusion}
+This thesis presents a highly accurate deep learning model for plant disease classification based on leaf images. By leveraging EfficientNetB3 and applying rigorous preprocessing, augmentation, and transfer learning, the model achieved 99.56\% accuracy, surpassing prior benchmarks. Unlike earlier proposals that included IoT sensor monitoring, this thesis focuses exclusively on image-based detection, ensuring feasibility, scalability, and practicality. Future work includes adaptation to field images, integration into mobile platforms, and extension to real-world agricultural systems.
+
+% ------------------- REFERENCES -------------------
+\bibliographystyle{apalike}
+\bibliography{references}
+
+\end{document}
+
